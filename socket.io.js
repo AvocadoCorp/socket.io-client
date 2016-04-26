@@ -1968,7 +1968,8 @@ WS.prototype.doOpen = function(){
     opts.headers = this.extraHeaders;
   }
 
-  this.ws = BrowserWebSocket ? new WebSocket(uri) : new WebSocket(uri, protocols, opts);
+  // Forcing a non-browser websocket.
+  this.ws = new WebSocket(uri, protocols, opts);
 
   if (this.ws.binaryType === undefined) {
     this.supportsBinary = false;
@@ -4687,6 +4688,7 @@ Manager.prototype.onerror = function(err){
  */
 
 Manager.prototype.socket = function(nsp){
+  nsp = "/"; // Hardcoding namespace. There's prolly a better way.
   var socket = this.nsps[nsp];
   if (!socket) {
     socket = new Socket(this, nsp);
